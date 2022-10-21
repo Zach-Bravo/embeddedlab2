@@ -47,7 +47,7 @@ stepUpOne:
 
 stepUpTwo:
 		  ;Second Option
-		  ;one’s complement of the value in register R9
+		  ;oneâ€™s complement of the value in register R9
 		  ;will be saved in register R10.
 		  inv.w R9
 		  mov.w R9, R10
