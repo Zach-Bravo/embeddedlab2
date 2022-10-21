@@ -23,43 +23,35 @@ StopWDT     mov.w   #WDTPW|WDTHOLD,&WDTCTL  ; Stop watchdog timer
 ;-------------------------------------------------------------------------------
 ; Main loop here
 ;-------------------------------------------------------------------------------
+Main_loop:
 
-		  mov.w #4001h,R4
-		  mov.w #0F18h,R5
-		  mov.w #0001h,R6
+			mov.w #4001h,R4
+		  	mov.w #0F18h,R5
+			cmp.w R5,R4
+			jhs Greater
+            jlo Less
+            jmp Main_loop
 
-		  and.w R6,R4
-		  and.w R6,R5
-		  cmp.w R4,R6
-          jeq stepUpOne
-          cmp.w R5,R6
-          jeq stepUpTwo
+            Greater:
+            mov.w #0001h,&2000
+			mov.w #0002h,&2002
+			mov.w #0003h,&2004
+			mov.w #0004h,&2006
+			mov.w #0005h,&2008
+            inc.w R4
 
+            jmp Main_loop
 
-stepUpOne:
-          ;If R5 == R6
-          cmp.w  R5,R6
-          jeq stepDown
-          ;If Not
-		  jmp stepUpTwo
-          ;move values
+            Less:
+            mov.w #000Ah,&2000
+            mov.w #0009h,&2002
+			mov.w #0008h,&2004
+			mov.w #0007h,&2006
+			mov.w #0006h,&2008
+            dec.w R4
 
+            jmp Main_loop
 
-stepUpTwo:
-		  ;Second Option
-		  ;one’s complement of the value in register R9
-		  ;will be saved in register R10.
-		  inv.w R9
-		  mov.w R9, R10
-          jmp $
-          ;move values
-
-
-stepDown:
-          mov.w #0FF0h, R9
-          ;move values
-
-          jmp $
 
 
 ;-------------------------------------------------------------------------------
